@@ -39,11 +39,12 @@ set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
 
 add_subdirectory( glfw )
 add_subdirectory( glew/build/cmake )
-target_include_directories(${PROJECT_NAME} PUBlIC glew/include/)
 
 if( MSVC )
     SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
 endif()
+
+include_directories(glew/include)
 
 file(GLOB SHADER_RES
     "res/shaders/*.glsl"
@@ -52,6 +53,13 @@ file(GLOB SHADER_RES
 file(GLOB IMAGE_RES
     "res/images/*.jpg"
     "res/images/*.png"
+)
+
+file(GLOB GLM_SRC
+    "src/glm/*.hpp"
+    "src/glm/ext/*.hpp"
+    "src/glm/gtc/*.hpp"
+    "src/glm/gtc/*.hpp"
 )
 
 file(GLOB SOIL2_SRC
@@ -65,7 +73,7 @@ file(GLOB CORE_SRC
     "src/*.c"
 )
      
-add_executable( ${PROJECT_NAME} WIN32 ${CORE_SRC} ${SOIL2_SRC} ${SHADER_RES} ${IMAGE_RES})
+add_executable( ${PROJECT_NAME} WIN32 ${GLEW_INC} ${CORE_SRC} ${SOIL2_SRC} ${SHADER_RES} ${IMAGE_RES})
 target_link_libraries( ${PROJECT_NAME} ${OPENGL_LIBRARIES} glew glfw )
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 
