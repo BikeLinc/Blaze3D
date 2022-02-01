@@ -198,8 +198,8 @@ int main()
 
         // load textures (we now use a utility function to keep the code more organized)
         // -----------------------------------------------------------------------------
-        const char* text = "grass.jpg";
-        const char* spec = "grass_metallic.jpg";
+        const char* text = "res/images/grass.jpg";
+        const char* spec = "res/images/grass_metallic.png";
         unsigned int diffuseMap = loadTexture(text);
         unsigned int specularMap = loadTexture(spec);
 
