@@ -140,20 +140,14 @@ int main()
 
         std::vector<glm::vec3> cubePositions;
 
-        cubePositions.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-        cubePositions.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-        cubePositions.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-        cubePositions.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+        float y = 0.0f;
 
-        /*
-        for (float x = 0.0f; x < xSize; x++) {
-                for (float z = 0.0f; z < zSize; z++) {
-                        for (float y = 0.0f; y < ySize; y++) {
-                                cubePositions.push_back(glm::vec3(x, y, z));
-                        }
+        for (float x = 0.0; x < xSize; x++) {
+                for (float z = 0.0; z < zSize; z++) {
+                        cubePositions.push_back(glm::vec3(x, y, z));
+                        std::cout << "object(" << x << ", " << y << ", " << z << ")" << std::endl;
                 }
         }
-        */
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
