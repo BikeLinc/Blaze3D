@@ -55,6 +55,13 @@ file(GLOB IMAGE_RES
     "res/images/*.png"
 )
 
+file(COPY ${SHADER_RES} DESTINATION "${CMAKE_BINARY_DIR}/res/shaders")
+file(COPY ${IMAGE_RES} DESTINATION "${CMAKE_BINARY_DIR}/res/images")
+
+
+
+
+
 file(GLOB GLM_SRC
     "src/glm/*.hpp"
     "src/glm/ext/*.hpp"
