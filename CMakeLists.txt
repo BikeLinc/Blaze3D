@@ -30,11 +30,7 @@ project( BlazeEngine )
 
 find_package( OpenGL REQUIRED )
 
-find_package(GLEW REQUIRED)
-if (GLEW_FOUND)
-    include_directories($(GLEW_INCLUDE_DIRS))
-    link_libraries(${GLEW_LIBRARIES})
-endif()
+
 
 include_directories( ${OPENGL_INCLUDE_DIRS} )
 
@@ -42,6 +38,8 @@ set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
 
 add_subdirectory( glfw )
+add_subdirectory( glew/build/cmake )
+target_include_directories(${PROJECT_NAME} PUBlIC glew/include/)
 
 if( MSVC )
     SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
@@ -68,7 +66,7 @@ file(GLOB CORE_SRC
 )
      
 add_executable( ${PROJECT_NAME} WIN32 ${CORE_SRC} ${SOIL2_SRC} ${SHADER_RES} ${IMAGE_RES})
-target_link_libraries( ${PROJECT_NAME} ${OPENGL_LIBRARIES} glfw )
+target_link_libraries( ${PROJECT_NAME} ${OPENGL_LIBRARIES} glew glfw )
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 
         message( "\n\t[ WARNING ]\n\n\tCMake version lower than 3.6.\n\n\t - Please update CMake and rerun; OR\n\t - Manually set 'GLFW-CMake-starter' as StartUp Project in Visual Studio.\n" )
