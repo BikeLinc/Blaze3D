@@ -172,7 +172,7 @@ int stbi__pvr_info_from_file(FILE *f,                  int *x, int *y, int *comp
  @Title        PVRTDecompress
  @Copyright    Copyright (C)  Imagination Technologies Limited.
  @Platform     ANSI compatible
- @Description  PVRTC Texture Decompression.
+ @Description  PVRTC TextureLoader Decompression.
 ******************************************************************************/
 
 typedef unsigned char      PVRTuint8;
@@ -274,7 +274,7 @@ static void Unpack5554Colour(const AMTC_BLOCK_STRUCT *pBlock,
 
 			/*
 				The precision of Blue depends on  A or B. If A then we need to
-				replicate the top bit to get 5 bits in total
+				replicate the top bit to getTexture 5 bits in total
 			*/
 			ABColours[i][2] = RawBits[i] & 0x1F;
 			if(i==0)
@@ -458,7 +458,7 @@ static void InterpolateColours(const int ColourP[4],
 	else
 		u = (x & 0x3) | ((~x & 0x2) << 1);
 
-	// get the u and v scale amounts
+	// getTexture the u and v scale amounts
 	v  = v - BLK_Y_SIZE/2;
 
 	if(Do2bitMode)
@@ -482,7 +482,7 @@ static void InterpolateColours(const int ColourP[4],
 		Result[k] = tmp1;
 	}
 
-	// Lop off the appropriate number of bits to get us to 8 bit precision
+	// Lop off the appropriate number of bits to getTexture us to 8 bit precision
 	if(Do2bitMode)
 	{
 		// do RGB
@@ -749,7 +749,7 @@ static void Decompress(AMTC_BLOCK_STRUCT *pCompressedData,
 
 
 	/*
-	// For MBX don't allow the sizes to get too small
+	// For MBX don't allow the sizes to getTexture too small
 	*/
 	BlkXDim = PVRT_MAX(2, XDim / XBlockSize);
 	BlkYDim = PVRT_MAX(2, YDim / BLK_Y_SIZE);
@@ -942,7 +942,7 @@ static void * stbi__pvr_load(stbi__context *s, int *x, int *y, int *comp, int re
 	// Load only the first mip map level
 	levelSize = (s->img_x * s->img_y * header.dwBitCount + 7) / 8;
 
-	// get the raw data
+	// getTexture the raw data
 	pvr_data = (stbi_uc *)malloc( levelSize );
 	stbi__getn( s, pvr_data, levelSize );
 

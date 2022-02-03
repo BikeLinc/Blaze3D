@@ -15,7 +15,7 @@ extern "C" {
 
 /**
 	This function upscales an image.
-	Not to be used to create MIPmaps,
+	Not to be used to createWindow MIPmaps,
 	but to make it square,
 	or to make it a power-of-two sized.
 **/

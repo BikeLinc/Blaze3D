@@ -125,7 +125,7 @@ unsigned char* convert_image_to_DXT1(
 	{
 		chan_step = 0;
 	}
-	/*	get the RAM for the compressed image
+	/*	getTexture the RAM for the compressed image
 		(8 bytes per 4x4 pixel block)	*/
 	*out_size = ((width+3) >> 2) * ((height+3) >> 2) * 8;
 	compressed = (unsigned char*)malloc( *out_size );
@@ -208,7 +208,7 @@ unsigned char* convert_image_to_DXT5(
 	}
 	/*	# channels = 1 or 3 have no alpha, 2 & 4 do have alpha	*/
 	has_alpha = 1 - (channels & 1);
-	/*	get the RAM for the compressed image
+	/*	getTexture the RAM for the compressed image
 		(16 bytes per 4x4 pixel block)	*/
 	*out_size = ((width+3) >> 2) * ((height+3) >> 2) * 16;
 	compressed = (unsigned char*)malloc( *out_size );
@@ -517,7 +517,7 @@ void
 	float vec_len2 = 0.0f, dot_offset = 0.0f;
 	/*	stupid order	*/
 	int swizzle4[] = { 0, 2, 3, 1 };
-	/*	get the master colors	*/
+	/*	getTexture the master colors	*/
 	LSE_master_colors_max_min( &enc_c0, &enc_c1, channels, uncompressed );
 	/*	store the 565 color 0 and color 1	*/
 	compressed[0] = (enc_c0 >> 0) & 255;
@@ -591,7 +591,7 @@ void
 	float scale_me;
 	/*	stupid order	*/
 	int swizzle8[] = { 1, 7, 6, 5, 4, 3, 2, 0 };
-	/*	get the alpha limits (a0 > a1)	*/
+	/*	getTexture the alpha limits (a0 > a1)	*/
 	a0 = a1 = uncompressed[3];
 	for( i = 4+3; i < 16*4; i += 4 )
 	{

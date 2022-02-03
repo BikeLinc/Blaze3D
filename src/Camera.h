@@ -1,3 +1,15 @@
+/******************************************************************************
+ *
+ * @file	Camera.h
+ *
+ * @author	JoeyDeVries | https://twitter.com/JoeyDeVriez
+ *
+ * @license     https://creativecommons.org/licenses/by-nc/4.0/
+ *
+ * @code        https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h
+ *
+ *****************************************************************************/
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -89,7 +101,7 @@ public:
                 Yaw += xoffset;
                 Pitch += yoffset;
 
-                // make sure that when pitch is out of bounds, screen doesn't get flipped
+                // make sure that when pitch is out of bounds, screen doesn't getTexture flipped
                 if (constrainPitch)
                 {
                         if (Pitch > 89.0f)

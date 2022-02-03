@@ -669,7 +669,7 @@ unsigned int
 		result_string_pointer = stbi_failure_reason();
 		return 0;
 	}
-	/*	upload the texture, and create a texture ID if necessary	*/
+	/*	upload the texture, and createWindow a texture ID if necessary	*/
 	tex_id = SOIL_internal_create_OGL_texture(
 			img, &width, &height, channels,
 			reuse_texture_ID, flags,
@@ -862,7 +862,7 @@ unsigned int
 		result_string_pointer = stbi_failure_reason();
 		return 0;
 	}
-	/*	upload the texture, and create a texture ID if necessary	*/
+	/*	upload the texture, and createWindow a texture ID if necessary	*/
 	tex_id = SOIL_internal_create_OGL_texture(
 			img, &width, &height, channels,
 			reuse_texture_ID, flags,
@@ -1100,7 +1100,7 @@ unsigned int
 		result_string_pointer = "Single cubemap image must have a 6:1 ratio";
 		return 0;
 	}
-	/*	try the image split and create	*/
+	/*	try the image split and createWindow	*/
 	tex_id = SOIL_create_OGL_single_cubemap(
 			img, width, height, channels,
 			face_order, reuse_texture_ID, flags
@@ -1209,7 +1209,7 @@ unsigned int
 		result_string_pointer = "Single cubemap image must have a 6:1 ratio";
 		return 0;
 	}
-	/*	try the image split and create	*/
+	/*	try the image split and createWindow	*/
 	tex_id = SOIL_create_OGL_single_cubemap(
 			img, width, height, channels,
 			face_order, reuse_texture_ID, flags
@@ -1518,7 +1518,7 @@ unsigned int
 				 ( flags & SOIL_FLAG_CoCg_Y )
 				);
 
-	/*	create a copy the image data only if needed */
+	/*	createWindow a copy the image data only if needed */
 	if ( needCopy ) {
 		img = (unsigned char*)malloc( iwidth*iheight*channels );
 		memcpy( img, data, iwidth*iheight*channels );
@@ -1648,7 +1648,7 @@ unsigned int
 		/*	this will only work with RGB and RGBA images */
 		convert_RGB_to_YCoCg( img, iwidth, iheight, channels );
 	}
-	/*	create the OpenGL texture ID handle
+	/*	createWindow the OpenGL texture ID handle
 		(note: allowing a forced texture ID lets me reload a texture)	*/
 	tex_id = reuse_texture_ID;
 	if( tex_id == 0 )
@@ -2271,7 +2271,7 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 		DDS_full_size = DDS_main_size;
 	}
 	DDS_data = (unsigned char *)malloc( DDS_full_size );
-	/*	got the image data RAM, create or use an existing OpenGL texture handle	*/
+	/*	got the image data RAM, createWindow or use an existing OpenGL texture handle	*/
 	tex_ID = reuse_texture_ID;
 	if( tex_ID == 0 ) { glGenTextures( 1, &tex_ID ); }
 	/*  bind an OpenGL texture ID	*/
@@ -2638,7 +2638,7 @@ unsigned int SOIL_direct_load_PVR_from_memory(
 			// Do Alpha-swap if needed
 			cur_texture_ptr = texture_ptr;
 
-			// Load the Texture
+			// Load the TextureLoader
 			/* If the texture is PVRTC then use GLCompressedTexImage2D */
 			if( is_compressed_format ) {
 				/* Calculate how many bytes this MIP level occupies */

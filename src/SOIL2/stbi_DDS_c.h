@@ -369,7 +369,7 @@ static void * stbi__dds_load(stbi__context *s, int *x, int *y, int *comp, int re
 	flags = DDPF_FOURCC | DDPF_RGB;
 	if( (header.sPixelFormat.dwFlags & flags) == 0 ) return NULL;
 	if( (header.sCaps.dwCaps1 & DDSCAPS_TEXTURE) == 0 ) return NULL;
-	//	get the image data
+	//	getTexture the image data
 	s->img_x = header.dwWidth;
 	s->img_y = header.dwHeight;
 	s->img_n = 4;
@@ -397,7 +397,7 @@ static void * stbi__dds_load(stbi__context *s, int *x, int *y, int *comp, int re
 		/*	check the expected size...oops, nevermind...
 			those non-compliant writers leave
 			dwPitchOrLinearSize == 0	*/
-		//	passed all the tests, get the RAM for decoding
+		//	passed all the tests, getTexture the RAM for decoding
 		sz = (s->img_x)*(s->img_y)*4*cubemap_faces;
 		dds_data = (unsigned char*)malloc( sz );
 		/*	do this once for each face	*/
@@ -410,7 +410,7 @@ static void * stbi__dds_load(stbi__context *s, int *x, int *y, int *comp, int re
 				int bx, by, bw=4, bh=4;
 				int ref_x = 4 * (i % block_pitch);
 				int ref_y = 4 * (i / block_pitch);
-				//	get the next block's worth of compressed data, and decompress it
+				//	getTexture the next block's worth of compressed data, and decompress it
 				if( DXT_family == 1 )
 				{
 					//	DXT1

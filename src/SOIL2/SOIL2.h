@@ -29,7 +29,7 @@
 	- HDR		load
 	- PIC		load
 
-	OpenGL Texture Features:
+	OpenGL TextureLoader Features:
 	- resample to power-of-two sizes
 	- MIPmap generation
 	- compressed texture S3TC formats (if supported)

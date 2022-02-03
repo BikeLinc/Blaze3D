@@ -1,3 +1,15 @@
+/******************************************************************************
+ *
+ * @file	Shader.h
+ *
+ * @author	JoeyDeVries | https://twitter.com/JoeyDeVriez
+ *
+ * @license     https://creativecommons.org/licenses/by-nc/4.0/
+ * 
+ * @code        https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader.h
+ *
+ *****************************************************************************/
+
 #ifndef SHADER_H
 #define SHADER_H
 

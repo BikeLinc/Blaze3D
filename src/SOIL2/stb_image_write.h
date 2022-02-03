@@ -53,7 +53,7 @@ USAGE:
 
    Each function returns 0 on failure and non-0 on success.
 
-   The functions create an image file defined by the parameters. The image
+   The functions createWindow an image file defined by the parameters. The image
    is a rectangle of pixels stored from left-to-right, top-to-bottom.
    Each pixel contains 'comp' channels of data stored interleaved with 8-bits
    per channel, in the following order: 1=Y, 2=YA, 3=RGB, 4=RGBA. (Y is
@@ -203,7 +203,7 @@ typedef struct
    void *context;
 } stbi__write_context;
 
-// initialize a callback-based context
+// init a callback-based context
 static void stbi__start_write_callbacks(stbi__write_context *s, stbi_write_func *c, void *context)
 {
    s->func    = c;
@@ -944,12 +944,12 @@ unsigned char *stbi_write_png_to_mem(unsigned char *pixels, int stride_bytes, in
             if (est < bestval) { bestval = est; best = k; }
          }
       }
-      // when we get here, best contains the filter type, and line_buffer contains the data
+      // when we getTexture here, best contains the filter type, and line_buffer contains the data
       filt[j*(x*n+1)] = (unsigned char) best;
       STBIW_MEMMOVE(filt+j*(x*n+1)+1, line_buffer, x*n);
    }
    STBIW_FREE(line_buffer);
-   zlib = stbi_zlib_compress(filt, y*( x*n+1), &zlen, 8); // increase 8 to get smaller but use more memory
+   zlib = stbi_zlib_compress(filt, y*( x*n+1), &zlen, 8); // increase 8 to getTexture smaller but use more memory
    STBIW_FREE(filt);
    if (!zlib) return 0;
 

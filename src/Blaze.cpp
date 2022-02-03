@@ -1,31 +1,16 @@
-#include <GL/glew.h>
-#define GLEW_STATIC
-#include <GLFW/glfw3.h>
-#include "SOIL2/SOIL2.h"
+#include "Blaze.h"
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
-#include "Shader.h"
-#include "Camera.h"
-
-#include <iostream>
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
-unsigned int loadTexture(const char* path);
-
-// settings
-const unsigned int SCR_WIDTH = 1920;
-const unsigned int SCR_HEIGHT = 1080;
+ 
+// Window Defaults
+const unsigned int WINDOW_DEFAULT_WIDTH = 1920;
+const unsigned int WINDOW_DEFAULT_HEIGHT = 1080;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
+float lastX = WINDOW_DEFAULT_WIDTH / 2.0f;
+float lastY = WINDOW_DEFAULT_HEIGHT / 2.0f;
 bool firstMouse = true;
 
 // timing
@@ -35,104 +20,45 @@ float lastFrame = 0.0f;
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
-int main()
-{
-        // glfw: initialize and configure
-        // ------------------------------
-        glfwInit();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-        // glfw window creation
-        // --------------------
-        GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "BlazeEngine", NULL, NULL);
-        if (window == NULL)
-        {
-                std::cout << "Failed to create GLFW window" << std::endl;
-                glfwTerminate();
-                return -1;
-        }
-        glfwMakeContextCurrent(window);
-        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-        glfwSetCursorPosCallback(window, mouse_callback);
-        glfwSetScrollCallback(window, scroll_callback);
-
-        // tell GLFW to capture our mouse
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-        // glad: load all OpenGL function pointers
-        // ---------------------------------------
-        if (GLEW_OK != glewInit())
-        {
+void renderer_init() {
+        if (GLEW_OK != glewInit()) {
                 std::cout << "Failed to initialize GLAD" << std::endl;
-                return -1;
         }
 
-        // configure global opengl state
-        // -----------------------------
         glEnable(GL_DEPTH_TEST);
+}
 
-        // build and compile our shader zprogram
-        // ------------------------------------
-        Shader lightingShader("res/shaders/scene_vert.glsl", "res/shaders/scene_frag.glsl");
-        Shader lightCubeShader("res/shaders/light_vert.glsl", "res/shaders/light_frag.glsl");
+int main() {
+        Window window("BLAZE WINDOW");
+        window.init();
 
-        // set up vertex data (and buffer(s)) and configure vertex attributes
-        // ------------------------------------------------------------------
-        float vertices[] = {
-                // positions          // normals           // texture coords
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-                 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-                 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        // Renderer Initialization
+        // --------------------------------------------------------------------
+        renderer_init();
 
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-                 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-                 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-                 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+        /// Scene ///
+        
+        // Shader Loading
+        // --------------------------------------------------------------------
+        Shader lightingShader("res/shaders/scene_vert.glsl",
+                "res/shaders/scene_frag.glsl");
+        Shader lightCubeShader("res/shaders/light_vert.glsl",
+                "res/shaders/light_frag.glsl");
 
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-                 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-                 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-                 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-                 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-                 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-                 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-                 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-                 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-                 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-                 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
-        };
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Mesh Loading
+        // --------------------------------------------------------------------
+        Mesh* cube = new Mesh();
 
 
+        // Texute Loading
+        // --------------------------------------------------------------------
+        const char* text = "res/images/rocks.jpg";
+        const char* spec = "res/images/rocks_rough.jpg";
+        TextureLoader diffuseMap(text);
+        TextureLoader specularMap(spec);
 
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+        // Mesh Position
+        // --------------------------------------------------------------------
         int xSize = 8;
         int ySize = 1;
         int zSize = 8;
@@ -149,53 +75,14 @@ int main()
                 }
         }
 
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-        // positions of the point lights
+        // Point Light Position
+        // --------------------------------------------------------------------
         glm::vec3 pointLightPositions[] = {
-            glm::vec3(0.7f,  0.2f,  2.0f),
-            glm::vec3(2.3f, -3.3f, -4.0f),
-            glm::vec3(-4.0f,  2.0f, -12.0f),
-            glm::vec3(0.0f,  0.0f, -3.0f)
+                glm::vec3(0.7f,  0.2f,  2.0f),
+                glm::vec3(2.3f, -3.3f, -4.0f),
+                glm::vec3(-4.0f,  2.0f, -12.0f),
+                glm::vec3(0.0f,  0.0f, -3.0f)
         };
-        // first, configure the cube's VAO (and VBO)
-        unsigned int VBO, cubeVAO;
-        glGenVertexArrays(1, &cubeVAO);
-        glGenBuffers(1, &VBO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        glBindVertexArray(cubeVAO);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-
-        // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-        unsigned int lightCubeVAO;
-        glGenVertexArrays(1, &lightCubeVAO);
-        glBindVertexArray(lightCubeVAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        // note that we update the lamp's position attribute's stride to reflect the updated buffer data
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        // load textures (we now use a utility function to keep the code more organized)
-        // -----------------------------------------------------------------------------
-        const char* text = "res/images/grass.jpg";
-        const char* spec = "res/images/grass_metallic.png";
-        unsigned int diffuseMap = loadTexture(text);
-        unsigned int specularMap = loadTexture(spec);
 
         // shader configuration
         // --------------------
@@ -203,10 +90,13 @@ int main()
         lightingShader.setInt("material.diffuse", 0);
         lightingShader.setInt("material.specular", 1);
 
+        /// Game Loop
+
+        window.show();
 
         // render loop
         // -----------
-        while (!glfwWindowShouldClose(window))
+        while (window.isOpen())
         {
                 // per-frame time logic
                 // --------------------
@@ -216,7 +106,7 @@ int main()
 
                 // input
                 // -----
-                processInput(window);
+                processInput(window.getWindow());
 
                 // render
                 // ------
@@ -228,12 +118,6 @@ int main()
                 lightingShader.setVec3("viewPos", camera.Position);
                 lightingShader.setFloat("material.shininess", 32.0f);
 
-                /*
-                   Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index
-                   the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
-                   by defining light types as classes and set their values in there, or by using a more efficient uniform approach
-                   by using 'Uniform buffer objects', but that is something we'll discuss in the 'Advanced GLSL' tutorial.
-                */
                 // directional light
                 lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
                 lightingShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
@@ -284,7 +168,7 @@ int main()
                 lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
                 // view/projection transformations
-                glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+                glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WINDOW_DEFAULT_WIDTH / (float)WINDOW_DEFAULT_HEIGHT, 0.1f, 100.0f);
                 glm::mat4 view = camera.GetViewMatrix();
                 lightingShader.setMat4("projection", projection);
                 lightingShader.setMat4("view", view);
@@ -295,13 +179,13 @@ int main()
 
                 // bind diffuse map
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, diffuseMap);
+                glBindTexture(GL_TEXTURE_2D, diffuseMap.getTexture());
                 // bind specular map
                 glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, specularMap);
+                glBindTexture(GL_TEXTURE_2D, specularMap.getTexture());
 
                 // render containers
-                glBindVertexArray(cubeVAO);
+                glBindVertexArray(cube->cubeVAO);
                 glm::vec3* cubePosList = cubePositions.data();
                 for (unsigned int i = 0; i < 10; i++)
                 {
@@ -320,7 +204,7 @@ int main()
                 lightCubeShader.setMat4("view", view);
 
                 // we now draw as many light bulbs as we have point lights.
-                glBindVertexArray(lightCubeVAO);
+                glBindVertexArray(cube->lightCubeVAO);
                 for (unsigned int i = 0; i < 4; i++)
                 {
                         model = glm::mat4(1.0f);
@@ -330,22 +214,18 @@ int main()
                         glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
 
-
-                // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-                // -------------------------------------------------------------------------------
-                glfwSwapBuffers(window);
-                glfwPollEvents();
+                window.update();
         }
 
         // optional: de-allocate all resources once they've outlived their purpose:
         // ------------------------------------------------------------------------
-        glDeleteVertexArrays(1, &cubeVAO);
-        glDeleteVertexArrays(1, &lightCubeVAO);
-        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &cube->cubeVAO);
+        glDeleteVertexArrays(1, &cube->lightCubeVAO);
+        glDeleteBuffers(1, &cube->VBO);
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
-        glfwTerminate();
+        window.terminate();
         return 0;
 }
 
@@ -403,26 +283,4 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
         camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
-
-// utility function for loading a 2D texture from file
-// ---------------------------------------------------
-GLuint loadTexture(const char* path) {
-        GLuint texture;
-        int width, height;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        unsigned char* image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        SOIL_free_image_data(image);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        return texture;
 }
