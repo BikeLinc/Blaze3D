@@ -52,8 +52,8 @@ int main() {
 
         // Texute Loading
         // --------------------------------------------------------------------
-        const char* text = "res/images/rocks.jpg";
-        const char* spec = "res/images/rocks_rough.jpg";
+        const char* text = "res/images/abstract_diff.jpg";
+        const char* spec = "res/images/abstract_spec.jpg";
         TextureLoader diffuseMap(text);
         TextureLoader specularMap(spec);
 
@@ -194,7 +194,6 @@ int main() {
                         model = glm::translate(model, cubePosList[i]);
                         model = glm::scale(model, glm::vec3(blockScale));
                         lightingShader.setMat4("model", model);
-                        std::cout << "model rendered" << std::endl;
                         glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
 
