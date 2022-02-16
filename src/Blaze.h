@@ -21,6 +21,7 @@
 // Scene
 #include "Camera.h"
 #include "Mesh.h"
+#include "Terrain.h"
 
 // Utilities
 #include "Texture.h"

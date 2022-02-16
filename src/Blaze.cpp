@@ -29,6 +29,7 @@ void renderer_init() {
 }
 
 int main() {
+
         Window window("BLAZE WINDOW");
         window.init();
 
@@ -52,8 +53,8 @@ int main() {
 
         // Texute Loading
         // --------------------------------------------------------------------
-        const char* text = "res/images/abstract_diff.jpg";
-        const char* spec = "res/images/abstract_spec.jpg";
+        const char* text = "res/images/grass.jpg";
+        const char* spec = "res/images/grass_metalic.jpg";
         TextureLoader diffuseMap(text);
         TextureLoader specularMap(spec);
 
@@ -62,15 +63,19 @@ int main() {
         int xSize = 8;
         int ySize = 1;
         int zSize = 8;
-        float blockScale = 0.25f;
+        float blockScale = 1.0f;
 
         std::vector<glm::vec3> cubePositions;
 
         float y = 0.0f;
 
-        for (float x = 0.0; x < xSize; x++) {
-                for (float z = 0.0; z < zSize; z++) {
-                        cubePositions.push_back(glm::vec3(x, y, z));
+        int terrainSize = 8;
+        Terrain terrain;
+        float* terrainHeights = terrain.generateHeightMap(terrainSize);
+
+        for (int x = 0.0; x < terrainSize; x++) {
+                for (int z = 0.0; z < terrainSize; z++) {
+                        cubePositions.push_back(glm::vec3(x, *(terrainHeights + x * terrainSize + z) * 0.2, z));
                         std::cout << "object(" << x << ", " << y << ", " << z << ")" << std::endl;
                 }
         }
@@ -187,7 +192,7 @@ int main() {
                 // render containers
                 glBindVertexArray(cube->cubeVAO);
                 glm::vec3* cubePosList = cubePositions.data();
-                for (unsigned int i = 0; i < 10; i++)
+                for (unsigned int i = 0; i < sizeof(cubePosList) * sizeof(cubePosList); i++)
                 {
                         // calculate the model matrix for each object and pass it to shader before drawing
                         glm::mat4 model = glm::mat4(1.0f);
