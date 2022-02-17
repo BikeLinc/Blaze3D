@@ -27,4 +27,4 @@
 #include "Texture.h"
 #include "Shader.h"
 
-#endif BLAZE_H
+#endif /*BLAZE_H*/

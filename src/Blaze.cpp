@@ -1,19 +1,18 @@
 #include "Blaze.h"
-
-
+// TODO: Move to Window.h
 void processInput(GLFWwindow* window);
  
-// Window Defaults
+// TDOD: Get window size directly from window object
 const unsigned int WINDOW_DEFAULT_WIDTH = 1920;
 const unsigned int WINDOW_DEFAULT_HEIGHT = 1080;
 
-// camera
+// TODO: Make Camera a pointer that engine has ref to
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = WINDOW_DEFAULT_WIDTH / 2.0f;
 float lastY = WINDOW_DEFAULT_HEIGHT / 2.0f;
 bool firstMouse = true;
 
-// timing
+// === FRAME TIMING ===
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
@@ -48,7 +47,7 @@ int main() {
 
         // Mesh Loading
         // --------------------------------------------------------------------
-        Mesh* cube = new Mesh();
+        MeshObject* cube = new MeshObject();
 
 
         // Texute Loading
@@ -66,19 +65,11 @@ int main() {
         float blockScale = 1.0f;
 
         std::vector<glm::vec3> cubePositions;
-
-        float y = 0.0f;
-
-        int terrainSize = 8;
+        int terrainSize = 4;
         Terrain terrain;
         float* terrainHeights = terrain.generateHeightMap(terrainSize);
 
-        for (int x = 0.0; x < terrainSize; x++) {
-                for (int z = 0.0; z < terrainSize; z++) {
-                        cubePositions.push_back(glm::vec3(x, *(terrainHeights + x * terrainSize + z) * 0.2, z));
-                        std::cout << "object(" << x << ", " << y << ", " << z << ")" << std::endl;
-                }
-        }
+        cubePositions.push_back(glm::vec3(0,0,0));
 
         // Point Light Position
         // --------------------------------------------------------------------
@@ -98,6 +89,8 @@ int main() {
         /// Game Loop
 
         window.show();
+
+        //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
         // render loop
         // -----------
@@ -192,7 +185,7 @@ int main() {
                 // render containers
                 glBindVertexArray(cube->cubeVAO);
                 glm::vec3* cubePosList = cubePositions.data();
-                for (unsigned int i = 0; i < sizeof(cubePosList) * sizeof(cubePosList); i++)
+                for (unsigned int i = 0; i < sizeof(cubePosList); i++)
                 {
                         // calculate the model matrix for each object and pass it to shader before drawing
                         glm::mat4 model = glm::mat4(1.0f);
