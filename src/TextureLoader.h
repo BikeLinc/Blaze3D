@@ -21,33 +21,33 @@ class TextureLoader {
 public:
         /**
          * Constructor loads image from specified path on class instantiation.
-         * 
+         *
          * \param path
          */
-	TextureLoader(const char* path) {
-		load(path);
-	}
+        TextureLoader(const char* path) {
+                load(path);
+        }
 
         /**
          * Return member texture variable.
-         * 
-         * \return 
+         *
+         * \return
          */
         unsigned int getTexture() {
                 return texture;
         }
-	
+
 
 private:
-	unsigned int texture;
+        unsigned int texture;
 
         /**
          * Loads image from specified path into member texture variable.
-         * 
+         *
          * \param path
-         * \return 
+         * \return
          */
-	void load(const char* path) {
+        void load(const char* path) {
                 int width, height;
 
                 glGenTextures(1, &this->texture);
@@ -63,7 +63,7 @@ private:
                 glGenerateMipmap(GL_TEXTURE_2D);
                 SOIL_free_image_data(image);
                 glBindTexture(GL_TEXTURE_2D, 0);
-	}
+        }
 };
 
 #endif /* TEXTURE_H */

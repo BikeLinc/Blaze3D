@@ -1,36 +1,13 @@
-# Build Script For Blaze Engine
+# Build Script For Blaze3D
 # 
 # This is a altered/modified version of Juliette Focaut and Doug Binks'
-# GLFW-CMake-starter found at https://github.com/juliettef/GLFW-CMake-starter.
-# 
-# 
-# 
-# Copyright (c) 2021 Juliette Foucaut and Doug Binks
-# 
-# This software is provided 'as-is', without any express or implied
-# warranty. In no event will the authors be held liable for any damages
-# arising from the use of this software.
-# 
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
-# 
-# 1. The origin of this software must not be misrepresented; you must not
-#    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
-
+# GLFW-CMake-starter found at https://github.com/juliettef/GLFW-CMake-starter;
 
 cmake_minimum_required( VERSION 3.1 )
 
-project( BlazeEngine )
+project( BlazeEngine2D )
 
 find_package( OpenGL REQUIRED )
-
-
 
 include_directories( ${OPENGL_INCLUDE_DIRS} )
 
@@ -45,22 +22,6 @@ if( MSVC )
 endif()
 
 include_directories(glew/include)
-
-file(GLOB SHADER_RES
-    "res/shaders/*.glsl"
-)
-
-file(GLOB IMAGE_RES
-    "res/images/*.jpg"
-    "res/images/*.png"
-)
-
-file(COPY ${SHADER_RES} DESTINATION "${CMAKE_BINARY_DIR}/res/shaders")
-file(COPY ${IMAGE_RES} DESTINATION "${CMAKE_BINARY_DIR}/res/images")
-
-
-
-
 
 file(GLOB GLM_SRC
     "src/glm/*.hpp"

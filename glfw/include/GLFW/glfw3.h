@@ -77,7 +77,7 @@ extern "C" {
  *  This is the reference documentation for monitor related functions and types.
  *  For more task-oriented information, see the @ref monitor_guide.
  */
-/*! @defgroup window Window reference
+/*! @defgroup window GLWindow reference
  *  @brief Functions and types related to windows.
  *
  *  This is the reference documentation for window related functions and types,
@@ -778,44 +778,44 @@ extern "C" {
  *  [window attribute](@ref GLFW_FOCUSED_attrib).
  */
 #define GLFW_FOCUSED                0x00020001
-/*! @brief Window iconification window attribute
+/*! @brief GLWindow iconification window attribute
  *
- *  Window iconification [window attribute](@ref GLFW_ICONIFIED_attrib).
+ *  GLWindow iconification [window attribute](@ref GLFW_ICONIFIED_attrib).
  */
 #define GLFW_ICONIFIED              0x00020002
-/*! @brief Window resize-ability window hint and attribute
+/*! @brief GLWindow resize-ability window hint and attribute
  *
- *  Window resize-ability [window hint](@ref GLFW_RESIZABLE_hint) and
+ *  GLWindow resize-ability [window hint](@ref GLFW_RESIZABLE_hint) and
  *  [window attribute](@ref GLFW_RESIZABLE_attrib).
  */
 #define GLFW_RESIZABLE              0x00020003
-/*! @brief Window visibility window hint and attribute
+/*! @brief GLWindow visibility window hint and attribute
  *
- *  Window visibility [window hint](@ref GLFW_VISIBLE_hint) and
+ *  GLWindow visibility [window hint](@ref GLFW_VISIBLE_hint) and
  *  [window attribute](@ref GLFW_VISIBLE_attrib).
  */
 #define GLFW_VISIBLE                0x00020004
-/*! @brief Window decoration window hint and attribute
+/*! @brief GLWindow decoration window hint and attribute
  *
- *  Window decoration [window hint](@ref GLFW_DECORATED_hint) and
+ *  GLWindow decoration [window hint](@ref GLFW_DECORATED_hint) and
  *  [window attribute](@ref GLFW_DECORATED_attrib).
  */
 #define GLFW_DECORATED              0x00020005
-/*! @brief Window auto-iconification window hint and attribute
+/*! @brief GLWindow auto-iconification window hint and attribute
  *
- *  Window auto-iconification [window hint](@ref GLFW_AUTO_ICONIFY_hint) and
+ *  GLWindow auto-iconification [window hint](@ref GLFW_AUTO_ICONIFY_hint) and
  *  [window attribute](@ref GLFW_AUTO_ICONIFY_attrib).
  */
 #define GLFW_AUTO_ICONIFY           0x00020006
-/*! @brief Window decoration window hint and attribute
+/*! @brief GLWindow decoration window hint and attribute
  *
- *  Window decoration [window hint](@ref GLFW_FLOATING_hint) and
+ *  GLWindow decoration [window hint](@ref GLFW_FLOATING_hint) and
  *  [window attribute](@ref GLFW_FLOATING_attrib).
  */
 #define GLFW_FLOATING               0x00020007
-/*! @brief Window maximization window hint and attribute
+/*! @brief GLWindow maximization window hint and attribute
  *
- *  Window maximization [window hint](@ref GLFW_MAXIMIZED_hint) and
+ *  GLWindow maximization [window hint](@ref GLFW_MAXIMIZED_hint) and
  *  [window attribute](@ref GLFW_MAXIMIZED_attrib).
  */
 #define GLFW_MAXIMIZED              0x00020008
@@ -824,9 +824,9 @@ extern "C" {
  *  Cursor centering [window hint](@ref GLFW_CENTER_CURSOR_hint).
  */
 #define GLFW_CENTER_CURSOR          0x00020009
-/*! @brief Window framebuffer transparency hint and attribute
+/*! @brief GLWindow framebuffer transparency hint and attribute
  *
- *  Window framebuffer transparency
+ *  GLWindow framebuffer transparency
  *  [window hint](@ref GLFW_TRANSPARENT_FRAMEBUFFER_hint) and
  *  [window attribute](@ref GLFW_TRANSPARENT_FRAMEBUFFER_attrib).
  */
@@ -990,7 +990,7 @@ extern "C" {
  *  [attribute](@ref GLFW_CONTEXT_CREATION_API_attrib).
  */
 #define GLFW_CONTEXT_CREATION_API   0x0002200B
-/*! @brief Window content area scaling window
+/*! @brief GLWindow content area scaling window
  *  [window hint](@ref GLFW_SCALE_TO_MONITOR).
  */
 #define GLFW_SCALE_TO_MONITOR       0x0002200C
@@ -2623,7 +2623,7 @@ GLFWAPI void glfwWindowHintString(int hint, const char* value);
  *  As long as at least one full screen window is not iconified, the screensaver
  *  is prohibited from starting.
  *
- *  Window systems put limits on window sizes.  Very large or very small window
+ *  GLWindow systems put limits on window sizes.  Very large or very small window
  *  dimensions may be overridden by the window system on creation.  Check the
  *  actual [size](@ref window_size) after creation.
  *
@@ -2647,7 +2647,7 @@ GLFWAPI void glfwWindowHintString(int hint, const char* value);
  *  GLFW_VERSION_UNAVAILABLE, @ref GLFW_FORMAT_UNAVAILABLE and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @remark @win32 Window creation will fail if the Microsoft GDI software
+ *  @remark @win32 GLWindow creation will fail if the Microsoft GDI software
  *  OpenGL implementation is the only one available.
  *
  *  @remark @win32 If the executable has an icon resource named `GLFW_ICON,` it
